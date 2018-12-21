@@ -1,14 +1,4 @@
 {
-  "_from": "git+https://github.com/Pingze-github/passport-common-oauth2.git",
-  "_id": "passport-common-oauth2@0.0.1",
-  "_inBundle": false,
-  "_integrity": "",
-  "_location": "/passport-common-oauth2",
-  "_phantomChildren": {},
-  "_requiredBy": [
-    "#USER",
-    "/"
-  ],
   "author": {
     "name": "Pingze",
     "email": "wang719695@gmail.com",
@@ -52,5 +42,5 @@
   "scripts": {
     "test": "mocha --require test/bootstrap/node test/*.test.js"
   },
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
