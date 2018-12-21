@@ -4,7 +4,7 @@ A Passport strategy for common OAuth2.0 Authentication Server.
 [Passport](http://passportjs.org/) strategy for authenticating with Common Authentication Service
 using the OAuth 2.0 API.
 
-Recommend to use with [common-oauth2-server]()
+Recommend to use with [common-oauth2-server](https://github.com/Pingze-github/common-oauth2-server)
 
 ## Usage
 
