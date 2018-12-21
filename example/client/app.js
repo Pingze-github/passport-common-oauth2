@@ -1,33 +1,21 @@
-# passport-common-oauth2
-A Passport strategy for common OAuth2.0 Authentication Server.
 
-[Passport](http://passportjs.org/) strategy for authenticating with Common Authentication Service
-using the OAuth 2.0 API.
-
-Recommend to use with [common-oauth2-server]()
-
-## Usage Case
-
-Here is a express client using passport-common-oauth2.
-
-```
 const express = require('express');
-const app = express();
+const client = express();
 
 const passport = require('passport');
 const CommonOauth2Strategy = require('passport-common-oauth2').Strategy;
 
-app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ resave: true, saveUninitialized: true }));
+client.use(require('cookie-parser')());
+client.use(require('body-parser').urlencoded({ extended: true }));
+client.use(require('express-session')({ resave: true, saveUninitialized: true }));
 // Use session. user profile will be stored in req.session.passport
-app.use(passport.initialize());
-app.use(passport.session());
+client.use(passport.initialize());
+client.use(passport.session());
 
 // A User service
 class User {
-    static findOrCreate(profile, cb) {}
-    static findById(id, cb) {}
+  static findOrCreate(profile, cb) {}
+  static findById(id, cb) {}
 }
 
 // serialize&deserialize of user info
@@ -62,25 +50,19 @@ passport.use(new CommonOauth2Strategy({
 ));
 
 // Route configuration
-app.get('/auth/github', passport.authenticate('github'));
+client.get('/auth/github', passport.authenticate('github'));
 
-app.get('/auth/github/callback',
+client.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
   });
 
-app.get('/', (req, res) => {
+client.get('/', (req, res) => {
   console.log('req.session.passport', req.session.passport);
   res.send('Hello World!');
 });
 
 const port = 3001;
-app.listen(port, () => console.log(`Example oauth2 client listening on port ${port}!`));
-
-```
-
-## License
-
-[The MIT License](http://opensource.org/licenses/MIT)
+client.listen(port, () => console.log(`Example oauth2 client listening on port ${port}!`));
