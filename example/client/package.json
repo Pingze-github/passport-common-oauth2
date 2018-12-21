@@ -14,6 +14,6 @@
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "passport": "^0.4.0",
-    "passport-common-oauth2": "git+https://github.com/Pingze-github/passport-common-oauth2.git"
+    "passport-common-oauth2": "github:Pingze-github/passport-common-oauth2"
   }
 }
