@@ -36,7 +36,7 @@ passport.use(new CommonOauth2Strategy({
     clientSecret: 'this_is_the_client_secret',
     callbackURL: `http://127.0.0.1:${port}/auth/common/callback`,
     scope: 'user_info:read',
-    state: 'default',
+    // state: 'default',
     // Configure these if you use an common-oauth2-server at different address
     // authorizationURL: 'http://127.0.0.1:3002/oauth/authorize',
     // tokenURL: 'http://127.0.0.1:3002/oauth/token',
