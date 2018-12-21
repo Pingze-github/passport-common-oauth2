@@ -33,16 +33,6 @@ passport.use(new CommonOauth2Strategy({
   }
 ));
 
-// Route configuration
-app.get('/auth/common', passport.authenticate('common-oauth2'));
-
-app.get('/auth/common/callback',
-  passport.authenticate('common-oauth2', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
-
 ```
 
 ## Example
