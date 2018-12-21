@@ -6,41 +6,13 @@ using the OAuth 2.0 API.
 
 Recommend to use with [common-oauth2-server]()
 
-## Usage Case
+## Usage
 
-Here is a express client using passport-common-oauth2.
+Here is an express client using passport-common-oauth2.
 
 ```
-const express = require('express');
-const app = express();
-
 const passport = require('passport');
 const CommonOauth2Strategy = require('passport-common-oauth2').Strategy;
-
-app.use(require('cookie-parser')());
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ resave: true, saveUninitialized: true }));
-// Use session. user profile will be stored in req.session.passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-// A User service
-class User {
-    static findOrCreate(profile, cb) {}
-    static findById(id, cb) {}
-}
-
-// serialize&deserialize of user info
-// must be implemented
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
-  });
-});
 
 // use Strategy
 passport.use(new CommonOauth2Strategy({
@@ -62,24 +34,19 @@ passport.use(new CommonOauth2Strategy({
 ));
 
 // Route configuration
-app.get('/auth/github', passport.authenticate('github'));
+app.get('/auth/common', passport.authenticate('common-oauth2'));
 
-app.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+app.get('/auth/common/callback',
+  passport.authenticate('common-oauth2', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
   });
 
-app.get('/', (req, res) => {
-  console.log('req.session.passport', req.session.passport);
-  res.send('Hello World!');
-});
-
-const port = 3001;
-app.listen(port, () => console.log(`Example oauth2 client listening on port ${port}!`));
-
 ```
+
+## Example
+See /example
 
 ## License
 
