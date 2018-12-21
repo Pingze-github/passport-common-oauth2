@@ -7,19 +7,19 @@ const CommonOauth2Strategy = require('passport-common-oauth2').Strategy;
 
 client.use(require('cookie-parser')());
 client.use(require('body-parser').urlencoded({ extended: true }));
-client.use(require('express-session')({ resave: true, saveUninitialized: true }));
-// Use session. user profile will be stored in req.session.passport
+client.use(require('express-session')({ secret: 'secret', resave: true, saveUninitialized: true }));
+// Use Middleware. To use req.session.passport
 client.use(passport.initialize());
 client.use(passport.session());
 
 // A User service
-class User {
-  static findOrCreate(profile, cb) {}
-  static findById(id, cb) {}
-}
+const User = require('./User');
 
-// serialize&deserialize of user info
+const port = 3001;
+
+// serialize&deserialize session.passport.user of user profile
 // must be implemented
+// Here, only save profile.id in session, need to load more from User
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
@@ -34,9 +34,10 @@ passport.deserializeUser(function(id, done) {
 passport.use(new CommonOauth2Strategy({
     clientID: 'sample_app',
     clientSecret: 'this_is_the_client_secret',
-    callbackURL: "http://127.0.0.1:3001/auth/common/callback",
+    callbackURL: `http://127.0.0.1:${port}/auth/common/callback`,
     scope: 'user_info:read',
     state: 'default',
+    // Configure these if you use an common-oauth2-server at different address
     // authorizationURL: 'http://127.0.0.1:3002/oauth/authorize',
     // tokenURL: 'http://127.0.0.1:3002/oauth/token',
     // userProfileURL: 'http://127.0.0.1:3002/api/user/detail',
@@ -49,20 +50,20 @@ passport.use(new CommonOauth2Strategy({
   }
 ));
 
-// Route configuration
-client.get('/auth/github', passport.authenticate('github'));
+// Authenticate Requests configuration
+client.get('/auth/common', passport.authenticate('common-oauth2'));
 
-client.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/login' }),
+client.get('/auth/common/callback',
+  passport.authenticate('common-oauth2', { failureRedirect: '/login' }),
   function(req, res) {
-    // Successful authentication, redirect home.
     res.redirect('/');
   });
 
+
 client.get('/', (req, res) => {
   console.log('req.session.passport', req.session.passport);
+  console.log('req.user', req.user);
   res.send('Hello World!');
 });
 
-const port = 3001;
 client.listen(port, () => console.log(`Example oauth2 client listening on port ${port}!`));
